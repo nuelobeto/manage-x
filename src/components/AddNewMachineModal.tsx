@@ -6,13 +6,19 @@ import { Machine } from "../types/types";
 import { useAppDispatch } from "../app/hooks";
 import { createMachine, incMachineQuantity } from "../features/machineSlice";
 
+// this component is the modal for adding a new machine.
 const AddNewMachineModal = () => {
+  // we get this states from global context. check GlobalContext file in context folder.
+  //Basically, we open this modal, it means we want to add a new machine to a machineType, hence we need to know the machine type that the machine would go to.
+  //therefore we save this machineType in "currentMachineType".
   const { setShowMachineModal, currentMachineType } = useContext(GlobalContext);
   const [quantity, setQuantity] = useState(1);
   const [model, setModel] = useState("");
 
+  // dispatch is used to trigger actions from our machineSlice (machineReducer).
   const dispatch = useAppDispatch();
 
+  // this function adds a new machine
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -24,7 +30,7 @@ const AddNewMachineModal = () => {
         name: model,
         quantity,
       };
-
+      //this condition prevents creating double machines with the same name. So if you enter a machine name that already exists, it will simply increase the quantity of that machine.
       if (
         currentMachineType.machines.some(
           (item) => item.name === newMachine.name
@@ -32,9 +38,11 @@ const AddNewMachineModal = () => {
       ) {
         dispatch(incMachineQuantity(newMachine));
       } else {
+        // this action dispatches (triggers) an action that creates a new machine for a particular machine type.
         dispatch(createMachine(newMachine));
       }
     }
+    // this function closes the modal after adding a machine.
     setShowMachineModal(false);
   };
 

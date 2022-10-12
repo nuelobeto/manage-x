@@ -16,6 +16,7 @@ import { Field, MachineType } from "../types/types";
 import { useAppDispatch } from "../app/hooks";
 import { createMachineType } from "../features/machineSlice";
 
+// this is the modal for adding a new machine type.
 const AddNewTypeModal = () => {
   const { setShowTypeModal } = useContext(GlobalContext);
   const [fieldTypes, setFieldTypes] = useState<Field[]>([]);
